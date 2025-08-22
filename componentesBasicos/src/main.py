@@ -29,9 +29,30 @@ def main(page: ft.Page):
     boton4=ft.IconButton(icon=ft.icons.IMAGE)
     
     pruebaBoton=ft.FloatingActionButton(icon=ft.icons.HOME)
+
+    #ENTRADAS DE TEXTO
+    nombre=ft.TextField(
+        #keyboard_type=ft.KeyboardType('PHONE'),
+        label="Ingrese su nombre ",
+        icon=ft.icons.INSTALL_DESKTOP
+        
+        )
+    edad=ft.TextField(
+        label="Ingrese su edad",
+        icon=ft.icons.PERSON_3
+    )
+    contraseña=ft.TextField(
+        label="Ingrese su contraseña",
+        password=True,
+        can_reveal_password=True,
+        icon=ft.icons.PASSWORD
+    )
+    
+
+
     #Componentes de la interfaz
     page.add(
-        boton,boton2,boton3,boton4, pruebaBoton 
+        boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña
     )
 
 
