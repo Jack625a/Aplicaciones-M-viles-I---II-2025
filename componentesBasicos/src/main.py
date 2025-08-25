@@ -6,6 +6,11 @@ import flet as ft
 
 #FUNCION PRINCIPAL
 def main(page: ft.Page):
+    #activar el scroll
+    page.scroll=ft.ScrollMode.AUTO
+
+
+
     #fUNCION ALERTA
     alerta=ft.AlertDialog(
         title=ft.Text("Alerta"),
@@ -15,7 +20,7 @@ def main(page: ft.Page):
         )
        
 
-
+    
 
     #Variable de control
     page.floating_action_button=(ft.FloatingActionButton(icon=ft.icons.HOME,bgcolor=ft.colors.PURPLE,on_click=lambda e:page.open(alerta)))
@@ -60,12 +65,27 @@ def main(page: ft.Page):
     opcion1=ft.Checkbox(label="Opcion1") #android
     opcion1ios=ft.CupertinoCheckbox(label="Opcion 1 iOS") #ios
 
+    #Selecctor Radio
+
+    opcion2=ft.Radio(label="Opcion2")
+    opcion2Ios=ft.CupertinoRadio("Opcion2 iOS")
+
+    def controlVolumen(e):
+        volumenTexto.value={e.control.value}
+        page.update()
+
+    #Sliders
+    volumenTexto=ft.Text()
+    volumen=ft.Slider(label="{value}% ",min=0,max=100, on_change=controlVolumen,divisions=10)
+
+    volumenIos=ft.CupertinoSlider(min=0,max=10)
 
     #Componentes de la interfaz
     page.add(
 
         boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña,
-        usuario,opcion1,opcion1ios
+        usuario,opcion1,opcion1ios, opcion2, opcion2Ios,volumen,volumenTexto,
+        volumenIos
     )
 
 
