@@ -48,11 +48,24 @@ def main(page: ft.Page):
         icon=ft.icons.PASSWORD
     )
     
+    #Campos de texto para iOS
+
+    usuario=ft.CupertinoTextField(
+        placeholder_text="|Ingrese su usuario",
+        placeholder_style=ft.TextStyle(color=ft.colors.PURPLE_800),
+        )
+    
+    #CASILLAS DE VERIFICACION
+
+    opcion1=ft.Checkbox(label="Opcion1") #android
+    opcion1ios=ft.CupertinoCheckbox(label="Opcion 1 iOS") #ios
 
 
     #Componentes de la interfaz
     page.add(
-        boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña
+
+        boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña,
+        usuario,opcion1,opcion1ios
     )
 
 
