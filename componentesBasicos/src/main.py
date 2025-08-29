@@ -19,7 +19,7 @@ def main(page: ft.Page):
         #modal=True
         )
        
-
+    page.appbar=ft.AppBar(title=ft.Text("Mi aplicacion"))
     
 
     #Variable de control
@@ -80,12 +80,28 @@ def main(page: ft.Page):
 
     volumenIos=ft.CupertinoSlider(min=0,max=10)
 
+    #Chips
+    chip=ft.Chip(label=ft.Text("Prueba chip"), leading=ft.Icon(name="HOME"),
+                 bgcolor=ft.Colors.BROWN_900, 
+                 color=ft.Colors.WHITE12,
+                 on_click=lambda e:page.open(alerta))
+
+    chip2=ft.Chip(label=ft.Text("Prueba chip"), leading=ft.Icon(name="HOME"),
+                    bgcolor=ft.Colors.BROWN_900, 
+                    color=ft.Colors.WHITE12,
+                    on_click=lambda e:page.open(alerta) )
+    
+    #contenedores
+    #CONTENEDOR TIPO FILA (HORIZONTAL) ROW
+    fila=ft.Row(controls=[chip,chip2,boton,boton2,boton3,boton4],spacing=15,scroll=ft.ScrollMode.AUTO)
+    #contenedo Tipo COLUMNA (VERTICALES) COLUMN
+    columna=ft.Column(controls=[chip,chip2,nombre,fila],spacing=20,width=250)
     #Componentes de la interfaz
     page.add(
 
         boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña,
         usuario,opcion1,opcion1ios, opcion2, opcion2Ios,volumen,volumenTexto,
-        volumenIos
+        volumenIos,chip,chip2,fila,columna
     )
 
 
