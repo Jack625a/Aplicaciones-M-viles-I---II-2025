@@ -96,12 +96,57 @@ def main(page: ft.Page):
     fila=ft.Row(controls=[chip,chip2,boton,boton2,boton3,boton4],spacing=15,scroll=ft.ScrollMode.AUTO)
     #contenedo Tipo COLUMNA (VERTICALES) COLUMN
     columna=ft.Column(controls=[chip,chip2,nombre,fila],spacing=20,width=250)
+    #Contenedores responsivos
+    #Contenedores row (filas responsivas)
+
+    filaResponsivo=ft.ResponsiveRow([
+        ft.Row(controls=[ft.Text("Filas Responsivas")],col=6),
+        ft.Row(controls=[chip,chip2,nombre],col=6),
+        ft.Row(controls=[boton,boton2,boton3],col=6)
+    ])
+
+    #Formulario Responsivo
+    formularioResponsivo=ft.ResponsiveRow([
+        ft.TextField(label="Nombre"),
+        ft.TextField(label="Celular"),
+        ft.TextField(label="Correo"),
+        ft.TextField(label="Carrera"),
+    ],
+        
+        spacing=10
+    )
+
+    #Contenedores simples
+    contenedorSimple=ft.Container(
+        content=ft.Text("Contenedor",size=20),
+        margin=10,
+        padding=10,
+        width=150,
+        height=150,
+        border_radius=50,
+        bgcolor=ft.Colors.BLUE_500,
+        alignment=ft.alignment.center
+    )
+
+    #dentro de una fila o columna (contenedores)
+    contenedoresDentroContenedores=ft.Column([
+        contenedorSimple,
+        ft.Divider(),
+        contenedorSimple,
+        ft.Divider(),
+        contenedorSimple,
+        ft.Divider(),
+        contenedorSimple
+    ],
+    scroll=ft.ScrollMode.ADAPTIVE)
+
     #Componentes de la interfaz
     page.add(
 
         boton,boton2,boton3,boton4, pruebaBoton, nombre,edad,contraseña,
         usuario,opcion1,opcion1ios, opcion2, opcion2Ios,volumen,volumenTexto,
-        volumenIos,chip,chip2,fila,columna
+        volumenIos,chip,chip2,fila,columna, filaResponsivo, formularioResponsivo,
+        contenedorSimple,contenedoresDentroContenedores
     )
 
 
