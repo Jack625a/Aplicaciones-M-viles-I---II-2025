@@ -18,7 +18,7 @@ def basedatos():
     'INSERT INTO estudiante '
     '(nombre,carrera) VALUES '
     '("Kevin Arroyo","Ingenieria de Sistemas"),'
-    '("Juan","Ingenieria de Sistemas"),' \
+    '("Juan","Ingenieria de Sistemas."),' \
     '("Ana","Medicina")')
 
     #Paso 2.4. Enviar la solicitud
