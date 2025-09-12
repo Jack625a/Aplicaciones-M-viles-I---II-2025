@@ -37,6 +37,16 @@ def añadirRegistros(nombre,carrera,foto):
     conexion.commit()
     conexion.close()
 
+#Funcion para obtener los datos
+def obtenerDatos():
+    connexion=sqlite3.connect("dbAppInterfaz")
+    selector=connexion.cursor()
+    selector.execute(
+        "SELECT * FROM estudiante WHERE carrera='Derecho'"
+    )
+    filas=selector.fetchall()
+    connexion.close()
+    return filas
 
 
 #Interfaz
@@ -71,6 +81,14 @@ def main(page: ft.Page):
     #Boton para registrar
     registrar=ft.CupertinoFilledButton("Registrar", on_click=añadir)
 
+    #Mostrar los datos
+    datos=obtenerDatos()
+    if not datos:
+        print("No hay registros que mostrar...")
+        estudiantes=[]
+    else:
+        estudiantes=ft.Text(value=datos)
+        
 
     page.add(
         ft.Column([
@@ -78,7 +96,8 @@ def main(page: ft.Page):
         nombre,
         carrera,
         foto,
-        registrar
+        registrar,
+        estudiantes
         ],
         width=350)
         
