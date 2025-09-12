@@ -42,7 +42,7 @@ def obtenerDatos():
     connexion=sqlite3.connect("dbAppInterfaz")
     selector=connexion.cursor()
     selector.execute(
-        "SELECT * FROM estudiante WHERE carrera='Derecho'"
+        "SELECT * FROM estudiante"
     )
     filas=selector.fetchall()
     connexion.close()
@@ -80,16 +80,42 @@ def main(page: ft.Page):
 
     #Boton para registrar
     registrar=ft.CupertinoFilledButton("Registrar", on_click=añadir)
-
+    resultado_Datos=ft.Text("aa")
+    imagenDatos=ft.Image()
+    lista=ft.Column()
     #Mostrar los datos
-    datos=obtenerDatos()
-    if not datos:
-        print("No hay registros que mostrar...")
-        estudiantes=[]
-    else:
-        estudiantes=ft.Text(value=datos)
-        
+    def mostrarDatos(e):
+        datos=obtenerDatos()
+        if not datos:
+            resultado_Datos.value="No hay registros que mostrar..."
+        else:
+            lista.controls.clear()
+            estudiantes=obtenerDatos()
+            #resultado_Datos.value=datos
+            for id,nombre,carrera,foto in estudiantes:
+                print(nombre)
+                card=ft.Card(
+                    content=ft.Container(
+                        content=ft.Row([
+                            ft.Image(src=foto, width=80, height=80),
+                            ft.Column([
+                                ft.Text(nombre),
+                                ft.Text(carrera)
+                            ]),
 
+                        ]),
+                        padding=15,
+                        bgcolor=ft.Colors.RED_300
+                    )
+                )
+                lista.controls.append(card)
+                #imagenDatos.src=imagen
+                #imagenDatos.width=80
+                #resultado_Datos.value=nombre
+
+        page.update()
+            
+    botonMostrar=ft.CupertinoFilledButton(text="Mostrar", on_click=mostrarDatos)
     page.add(
         ft.Column([
         titulo,
@@ -97,7 +123,9 @@ def main(page: ft.Page):
         carrera,
         foto,
         registrar,
-        estudiantes
+        botonMostrar,
+        lista
+       
         ],
         width=350)
         
