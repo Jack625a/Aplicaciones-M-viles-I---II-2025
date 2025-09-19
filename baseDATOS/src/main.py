@@ -29,7 +29,7 @@ def añadirRegistros(nombre, carrera, foto):
 def obtenerDatos():
     conexion = sqlite3.connect("dbAppInterfaz")
     selector = conexion.cursor()
-    selector.execute("SELECT * FROM estudiante")
+    selector.execute("SELECT * FROM estudiante WHERE id=1")
     filas = selector.fetchall()
     conexion.close()
     return filas
@@ -41,6 +41,23 @@ def eliminarRegistro(id):
     conexion.commit()
     conexion.close()
     obtenerDatos()
+
+#FUNCION PARA ACTULIZAR LOS DATOS
+def actualizarRegistro(id,nombre,carrera,foto):
+    #PASO1. ESTABLECER LA CONEXION
+    conexion=sqlite3.connect("dbAppInterfaz")
+    selector=conexion.cursor()
+    selector.execute("UPDATE estudiante SET nombre?,carrera=?, foto=? WHERE id=?",(nombre,carrera,foto,id),)
+    conexion.commit()
+    conexion.close()
+
+def mostrarDatoActulizar(id):
+    conexion = sqlite3.connect("dbAppInterfaz")
+    selector = conexion.cursor()
+    selector.execute("SELECT * FROM estudiante WHERE id=?",id)
+    filas = selector.fetchall()
+    conexion.close()
+    return filas
 
 # Interfaz principal
 def main(page: ft.Page):
@@ -75,7 +92,15 @@ def main(page: ft.Page):
             foto.value = ""
 
             page.update()
-
+    def mostrarFormulario(e):
+            ft.Column([
+                            tituloActualizar,
+                            nombreActulizar,
+                            carreraActualizar,
+                            fotoActualizar,
+                            botonActualizar
+                            
+                        ],visible=True)
     # Función para mostrar registros
     def mostrarDatos(e):
         datos = obtenerDatos()
@@ -89,18 +114,25 @@ def main(page: ft.Page):
                     content=ft.Container(
                         content=ft.Row(
                             [
-                                ft.Image(src=foto_est, width=80, height=80),
+                                ft.Text(id),
+                                ft.Image(src=foto_est, width=100, height=100,border_radius=30),
                                 ft.Column([ft.Text(nombre_est,size=18,weight=ft.FontWeight.BOLD), ft.Text(carrera_est)]),
                                 ft.Row(
                                     [ft.IconButton(icon=ft.Icons.DELETE
                                                    ,on_click=lambda e, id=id:eliminarRegistro(id),
-                                                   icon_color=ft.Colors.RED_400)]
+                                                   icon_color=ft.Colors.RED_400,
+                                                   tooltip="Eliminar"),
+                                    ft.IconButton(icon=ft.Icons.SYSTEM_UPDATE,
+                                                  on_click=lambda e:mostrarFormulario(),
+                                                  tooltip="Actualizar",
+                                                  icon_color=ft.Colors.GREEN_600,),
+                                    ]
                                 )
                             ]
                         ),
                         
                         padding=15,
-                        bgcolor=ft.colors.WHITE70,
+                        bgcolor=ft.Colors.WHITE70,
                     )
                 )
                 lista.controls.append(card)
@@ -110,6 +142,55 @@ def main(page: ft.Page):
     registrar = ft.CupertinoFilledButton("Registrar", on_click=añadir)
     botonMostrar = ft.CupertinoFilledButton(text="Mostrar", on_click=mostrarDatos)
 
+    #formulario para actualizar 
+    tituloActualizar=ft.Text("Actualizar datos" , size=20,visible=True)
+    nombreActulizar=ft.TextField(label="Nombre",visible=True)
+    carreraActualizar=ft.TextField(label="Carrera",visible=True)
+    fotoActualizar=ft.TextField(label="Foto",visible=True)
+    botonActualizar=ft.CupertinoFilledButton(text="Actualizar",visible=True)
+
+    idEditar={"id":None}
+
+    #def añadirDatos(e):
+    def mostrarDatosParaActulizar():
+        datos = mostrarDatoActulizar()
+        lista.controls.clear()
+
+        if not datos:
+            lista.controls.append(ft.Text("No hay registros que mostrar..."))
+        else:
+            for id, nombre_est, carrera_est, foto_est in datos:
+                card = ft.Card(
+                    content=ft.Container(
+                        content=ft.Row(
+                            [
+                                ft.Text(id),
+                                ft.Image(src=foto_est, width=100, height=100,border_radius=30),
+                                ft.Column([ft.Text(nombre_est,size=18,weight=ft.FontWeight.BOLD), ft.Text(carrera_est)]),
+                                ft.Row(
+                                    [ft.IconButton(icon=ft.Icons.DELETE
+                                                   ,on_click=lambda e, id=id:eliminarRegistro(id),
+                                                   icon_color=ft.Colors.RED_400,
+                                                   tooltip="Eliminar"),
+                                    ft.IconButton(icon=ft.Icons.SYSTEM_UPDATE,
+                                                  on_click=lambda e, id=id:actualizarRegistro(id)
+                                                  ,tooltip="Actualizar",
+                                                  icon_color=ft.Colors.GREEN_600)
+                                    ]
+                                )
+                            ]
+                        ),
+                        
+                        padding=15,
+                        bgcolor=ft.Colors.WHITE70,
+                    )
+                )
+                lista.controls.append(card)
+
+        page.update()
+   
+    
+    
 
     
 
@@ -123,8 +204,19 @@ def main(page: ft.Page):
                 registrar,
                 botonMostrar,
                 lista,
+                ft.Column([
+                            tituloActualizar,
+                            nombreActulizar,
+                            carreraActualizar,
+                            fotoActualizar,
+                            botonActualizar
+                            
+                        ],visible=True)
+                
+                
+                
             ],
-            width=350,
+            width=450,
         )
     )
 
