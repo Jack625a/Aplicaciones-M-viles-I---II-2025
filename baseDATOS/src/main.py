@@ -29,7 +29,7 @@ def añadirRegistros(nombre, carrera, foto):
 def obtenerDatos():
     conexion = sqlite3.connect("dbAppInterfaz")
     selector = conexion.cursor()
-    selector.execute("SELECT * FROM estudiante WHERE id=1")
+    selector.execute("SELECT * FROM estudiante")
     filas = selector.fetchall()
     conexion.close()
     return filas
@@ -54,8 +54,8 @@ def actualizarRegistro(id,nombre,carrera,foto):
 def mostrarDatoActulizar(id):
     conexion = sqlite3.connect("dbAppInterfaz")
     selector = conexion.cursor()
-    selector.execute("SELECT * FROM estudiante WHERE id=?",id)
-    filas = selector.fetchall()
+    selector.execute("SELECT * FROM estudiante WHERE id=?",(id,))
+    filas = selector.fetchone()
     conexion.close()
     return filas
 
@@ -69,6 +69,30 @@ def main(page: ft.Page):
     foto = ft.TextField(label="Ingrese una foto (URL): ")
 
     lista = ft.Column()
+
+    #Variable para almacenar el id en la seccion de editar
+    idEditar={"id":None}
+
+    #Configurar el formulario de actualizacion
+    tituloActualizar=ft.Text("Actualizar datos", size=20, visible=False)
+    nombreActulizar=ft.TextField(label="Nombre: ",visible=False)
+    carreraActualizar=ft.TextField(label="Carrera", visible=False)
+    fotoActualizar=ft.TextField("Foto", visible=False)
+
+    def guardarActualizacion(e):
+        if idEditar["id"] is not None:
+            actualizarRegistro(idEditar["id"],
+            nombreActulizar.value.strip(),
+            carreraActualizar.value.strip(),
+            fotoActualizar.value.strip()                              
+                               )
+            #Ocultamos y limpiamos el formulario
+            tituloActualizar.visible=False
+            nombreActulizar.visible=False
+            carreraActualizar.visible=False
+            fotoActualizar.visible=False
+            botonActualizar.visible=False
+
 
     # Función para añadir registro
     def añadir(e):
