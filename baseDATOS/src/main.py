@@ -93,6 +93,14 @@ def main(page: ft.Page):
             fotoActualizar.visible=False
             botonActualizar.visible=False
 
+            nombreActulizar.value=""
+            carreraActualizar.value=""
+            fotoActualizar.value=""
+
+            mostrarDatos(None)
+    botonActualizar=ft.CupertinoFilledButton(text="Actualizar",visible=False, 
+                                             on_click=guardarActualizacion)
+
 
     # Función para añadir registro
     def añadir(e):
@@ -115,16 +123,35 @@ def main(page: ft.Page):
             carrera.value = ""
             foto.value = ""
 
-            page.update()
-    def mostrarFormulario(e):
-            ft.Column([
-                            tituloActualizar,
-                            nombreActulizar,
-                            carreraActualizar,
-                            fotoActualizar,
-                            botonActualizar
+            mostrarDatos(None)
+    #Funcion para mostrar el formulario de actualizacion
+    def mostrarFormulario(id):
+            fila=mostrarDatoActulizar(id)
+            if fila:
+                idEditar["id"]=fila[0]
+                nombreActulizar.value=fila[1]
+                carreraActualizar.value=fila[2]
+                fotoActualizar.value=fila[3]
+
+                #HACER VISIBLE EL FORMULARIO DE ACTUALIZAR
+                tituloActualizar.visible=True
+                nombreActulizar.visible=True
+                carreraActualizar.visible=True
+                fotoActualizar.visible=True
+                botonActualizar.visible=True
+                page.update()
+
+                actualizarRegistro(id,nombreActulizar.value,carrera.value,foto.value)
+
+
+            ##ft.Column([
+              ##              tituloActualizar,
+                ##            nombreActulizar,
+                  ##          carreraActualizar,
+                    ##        fotoActualizar,
+                      ##      botonActualizar
                             
-                        ],visible=True)
+                       ## ],visible=True)
     # Función para mostrar registros
     def mostrarDatos(e):
         datos = obtenerDatos()
@@ -147,7 +174,9 @@ def main(page: ft.Page):
                                                    icon_color=ft.Colors.RED_400,
                                                    tooltip="Eliminar"),
                                     ft.IconButton(icon=ft.Icons.SYSTEM_UPDATE,
-                                                  on_click=lambda e:mostrarFormulario(),
+                                                  #ACCION DEL CLICK AL ACTUALIZAR
+                                                  on_click=lambda e, id=id: mostrarFormulario(id)                                               
+                                                  ,
                                                   tooltip="Actualizar",
                                                   icon_color=ft.Colors.GREEN_600,),
                                     ]
@@ -167,13 +196,13 @@ def main(page: ft.Page):
     botonMostrar = ft.CupertinoFilledButton(text="Mostrar", on_click=mostrarDatos)
 
     #formulario para actualizar 
-    tituloActualizar=ft.Text("Actualizar datos" , size=20,visible=True)
-    nombreActulizar=ft.TextField(label="Nombre",visible=True)
-    carreraActualizar=ft.TextField(label="Carrera",visible=True)
-    fotoActualizar=ft.TextField(label="Foto",visible=True)
-    botonActualizar=ft.CupertinoFilledButton(text="Actualizar",visible=True)
+    #tituloActualizar=ft.Text("Actualizar datos" , size=20,visible=True)
+    #nombreActulizar=ft.TextField(label="Nombre",visible=True)
+    #carreraActualizar=ft.TextField(label="Carrera",visible=True)
+    #fotoActualizar=ft.TextField(label="Foto",visible=True)
+    #botonActualizar=ft.CupertinoFilledButton(text="Actualizar",visible=True)
 
-    idEditar={"id":None}
+    #idEditar={"id":None}
 
     #def añadirDatos(e):
     def mostrarDatosParaActulizar():
@@ -235,7 +264,7 @@ def main(page: ft.Page):
                             fotoActualizar,
                             botonActualizar
                             
-                        ],visible=True)
+                        ])
                 
                 
                 
